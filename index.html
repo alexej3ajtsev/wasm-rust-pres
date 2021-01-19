@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Shower Presentation Engine</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="node_modules/@shower/material/styles/styles.css">
+    <style>
+        .shower {
+            --slide-ratio: calc(4 / 3);
+        }
+
+        .small-text {
+            font-size: 1.2rem;
+            line-height: 1.7rem;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+    <header class="caption">
+        <h1>WASM </h1>
+        <p>Что это и как испоьзовать в проекте</p>
+    </header>
+
+    <section class="slide">
+        <img src="./images/main-image.jpeg" style="width: 100%;"/>
+        <p class="small-text">
+            Новый открытый формат байт-кода, исполняемого современными браузерами.
+             Он позволяет переносить код, написанный на таких языках как C, C++, C#, Rust, 
+             в низкоуровневые ассемблерные инструкции и использовать его в сети. 
+            </p><p class="small-text">
+             Формат имеет компактные размеры, высокую производительность, близкую к нативной, и может одновременно работать с  JavaScript.
+              <br />Не привязан к конкретному железу или окружению, 
+              поэтому может работать не только в браузерах,
+               но также может как автономная легковесная виртуальная машина.
+        </p>
+    </section>
+    <section class="slide">
+        <img src="./images/can-i-use.png" style="width: 100%;"/>
+        <p class="small-text">
+            На данный момент поддержка wasm в браузерах достаточно хорошая, 
+            он работает везде за исключением <b>IE 11</b>, <b>Opera mini</b> и скорее всего браузерах на телевизорах.
+            <br />
+            По сути поддержка браузерами <b>Web Assembly</b> сводится к тому, что двидок браузера будет загружать и запускать два типа кода - JavaScript и WebAssembly
+        </p>
+    </section>
+    <section class="slide">
+        <h2>
+            Для решения каких задач в браузере полезен WASM:
+        </h2>        
+        <a href="https://webassembly.org/docs/use-cases/">https://webassembly.org/docs/use-cases/</a>
+        <ul>
+            <li>
+                Игры (вплоть до AAA проектов, которые очень требовательны с ресурсам системы)
+            </li>
+            <li>
+                Использование нейронных сетей (Распознавание изображений, обработка потокового видео и т.д.)
+            </li>
+            <li>
+                Редактирование видео или изображений
+            </li>
+            <li>
+                Шифрование
+            </li>
+            <li>
+                Виртуальная и дополненная реальность
+            </li>
+            <li>
+                Эмуляция платформ
+            </li>
+        </ul>
+
+    </section>
+
+    <section class="slide">
+        <p class="small-text">
+            <b>Figma</b> использует WASM для плагинов, плагины пишутся на js, и чтобы его секьюрно запускать, они собрали js движок в webAssembly и уже в нем запускают сторонний js код на котором написаны плагины
+        </p><p class="small-text">
+            Код для <b>Web Assembly</b> не предназначен для написания вручную, скорее он спроектирован для эффективной компиляции из низкоуровневых исходных языков,
+            <br /> тем не менее на WASM можно писать (но это больно) , он поддерживает не только бинарный, но и текстовый формат:
+            <br /> Может оперировать числами с плавающей точкой и целыми числами используя:
+        </p>
+        <ul class="small-text">
+            <li>
+                Простую математику: <code>add</code>, <code>sub</code>, <code>mul</code>, <code>div</code>
+            </li>
+            <li>
+                Битовые операции: <code>and (&)</code>, <code>or (|)</code>, <code>xor (^)</code>, <code>shl/shr (>>/<<) </code> ...
+            </li>
+            <li>
+                Операции сравнения: <code>eq (==)</code>, <code>ne (!=)</code>, <code>eqz (==0)</code>, <code>gt/lt (>/<)</code> ...
+            </li>
+            <li>
+                <code>if () {} else {}</code>, <code>while () { break; }</code>
+            </li>
+            <li>
+                Экспорт функций, памяти
+            </li>
+        </ul>
+    </section>
+    <section class="slide">
+        <h2>Самый сложная часть работы с WASM - это вводить  в WASM и выводить в JS различные типы данных</h2>
+    </section>
+    <section class="slide">
+        <h2>Rust решает эту проблему c помощью <br><br><code>wasm-bindgen</code></h2>
+     
+        <img src="./images/01_rust_loves_js.png" style="width: 100%;"/>
+    </section>
+    <section class="slide">
+        <h2>Пример использования alert из WebAssembly</h2>
+        <img src="./images/wasm-create-0.png" style="width: 100%;"/>
+    </section>
+    <section class="slide">
+        <img src="./images/wasm-create-1.png" style="width: 100%;"/>
+        <p>
+            Импортируем функцию <code>alert</code> и экспортируем в JS функцию <code>greet</code>
+        </p>
+        <p>
+            Основное, на что стоит обратить внимание - это атрибуты <code>#[wasm_bindgen]</code> именно они отвечают за создание
+            соответствующих биндингов
+        </p>
+    </section>
+    <section class="slide">
+        <h2>Использование на стороне <b>JS</b></h2>
+        <img src="./images/wasm-create-2.png" style="width: 100%;"/>
+    </section>
+    <div class="progress"></div>
+
+    <script src="node_modules/@shower/core/dist/shower.js"></script>
+    <!-- Copyright © 2021 Yours Truly, Famous Inc. -->
+
+</body>
+</html>
